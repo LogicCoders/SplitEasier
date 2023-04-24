@@ -9,5 +9,4 @@ public class SpliteasierApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpliteasierApplication.class, args);
 	}
-
 }
