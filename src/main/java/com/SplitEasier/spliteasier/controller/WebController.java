@@ -12,27 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class WebController {
-
     private final ExpenseService expenseService;
     private final VendorService vendorService;
-
     public WebController(ExpenseService expenseService, VendorService vendorService) {
         this.expenseService = expenseService;
         this.vendorService = vendorService;
     }
-
     @PostMapping("/expense")
     public String newExpense(@ModelAttribute ExpenseForm expenseForm, Model model) {
        Expense exp = expenseService.createExpense(expenseForm.getExpenseName(),expenseForm.getDate(),expenseForm.getVendorName(),expenseForm.getAmount(),expenseForm.getExpenseType());
         System.out.println(exp.toString());
        return "redirect:/expense";
     }
-
-
     @GetMapping("/expense")
     public String getExpenses(Model model){
-
-
         model.addAttribute("vendors",vendorService.findVendorNames());
         model.addAttribute("expenseForm",new ExpenseForm());
         return "expense";
