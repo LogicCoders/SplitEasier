@@ -1,8 +1,11 @@
 package com.SplitEasier.spliteasier.service;
 
 import com.SplitEasier.spliteasier.model.Expense;
+import com.SplitEasier.spliteasier.model.ExpenseType;
 import com.SplitEasier.spliteasier.model.Vendor;
+import com.SplitEasier.spliteasier.repository.ExpenseRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,19 +17,32 @@ public class ExpenseService {
 
     private final VendorService vendorService;
 
+    private final ExpenseRepository expenseRepository;
+
     private List<Expense> expenseList = new ArrayList<>();
 
-    public ExpenseService(VendorService vendorService) {
+    public ExpenseService(VendorService vendorService, ExpenseRepository expenseRepository) {
+
         this.vendorService = vendorService;
+        this.expenseRepository = expenseRepository;
     }
 
-    public Expense createExpense(String expenseName, Date expenseDate, String vendorName, Double amount) {
-        Vendor vendor = vendorService.findByName(vendorName);
-        Expense expense = new Expense(expenseName, expenseDate, vendorName, amount);
-        expenseList.add(expense);
-        return expense;
+
+    @Transactional
+    public Expense createExpense(String expenseName, String expenseDate, String vendorName, Double amount, ExpenseType expenseType) {
+        Expense expense = new Expense();
+        expense.setExpenseType(expenseType);
+        expense.setExpenseDate(expenseDate);
+        expense.setExpenseName(expenseName);
+        expense.setAmount(amount);
+        expense.setVendorId(vendorService.create(vendorName));
+        return expenseRepository.save(expense);
     }
-    public List<Expense> findAll(){
-        return expenseList;
+    @Transactional
+    public Iterable<Expense> findAll(){
+        return expenseRepository.findAll();
     }
+
+
+
 }

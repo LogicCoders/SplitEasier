@@ -2,23 +2,44 @@ package com.SplitEasier.spliteasier.model;
 
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.util.Date;
 import java.util.UUID;
 
+@Table("EXPENSE")
 public class Expense {
 
 
+    @Id
     private String id;
+
     private String expenseName;
-    private Date expenseDate;
-    private String vendorName;
+    private String expenseDate;
+
+    private String vendorId;
     private Double amount;
 
-    public Expense(String expenseName, Date expenseDate, String vendorName, Double amount) {
+    private ExpenseType expenseType;
+
+
+
+    public ExpenseType getExpenseType() {
+        return expenseType;
+    }
+
+    public void setExpenseType(ExpenseType expenseType) {
+        this.expenseType = expenseType;
+    }
+
+
+    public Expense(String expenseName, String expenseDate, String vendorId, Double amount, ExpenseType expenseType) {
+        this.expenseType = expenseType;
         this.id = UUID.randomUUID().toString();
         this.expenseName = expenseName;
         this.expenseDate = expenseDate;
-        this.vendorName = vendorName;
+        this.vendorId = vendorId;
         this.amount = amount;
     }
 
@@ -41,20 +62,20 @@ public class Expense {
         this.expenseName = expenseName;
     }
 
-    public Date getExpenseDate() {
+    public String getExpenseDate() {
         return expenseDate;
     }
 
-    public void setExpenseDate(Date expenseDate) {
+    public void setExpenseDate(String expenseDate) {
         this.expenseDate = expenseDate;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    public String getVendorId() {
+        return vendorId;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
     }
 
     public Double getAmount() {
