@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Account Page</h1>
+<h1>Expense Page</h1>
 
 <p>
     Expenses are as follows :
@@ -30,9 +30,9 @@
             <td th:text="${expense.id}">[id]</td>
             <td th:text="${expense.expenseName}">[expenseName]</td>
             <td th:text="${expense.ExpenseDate}">[ExpenseDate]</td>
-            <td th:text="${expense.ExpenseType}">[ExpenseType]</td>
-            <td th:text="${expense.vendorName}">[VendorName]</td>
             <td th:text="${expense.amount}">[Amount]</td>
+            <td th:text="${expense.expenseType}">[ExpenseType]</td>
+            <td th:text="${expense.vendorId}">[VendorID]</td>
         </tr>
         </tbody>
     </table>

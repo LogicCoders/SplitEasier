@@ -30,7 +30,12 @@ public class ExpenseService {
 
     @Transactional
     public Expense createExpense(String expenseName, String expenseDate, String vendorName, Double amount, ExpenseType expenseType) {
-        Expense expense = new Expense(expenseName,expenseDate,vendorService.create(vendorName),amount,expenseType);
+        Expense expense = new Expense();
+        expense.setExpenseName(expenseName);
+        expense.setExpenseDate(expenseDate);
+        expense.setVendorId(vendorService.create(vendorName));
+        expense.setAmount(amount);
+        expense.setExpenseType(expenseType);
         return expenseRepository.save(expense);
     }
     @Transactional

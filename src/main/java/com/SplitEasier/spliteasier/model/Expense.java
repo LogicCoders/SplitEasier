@@ -35,12 +35,12 @@ public class Expense {
 
 
     public Expense(String expenseName, String expenseDate, String vendorId, Double amount, ExpenseType expenseType) {
-        this.expenseType = expenseType;
-        this.id = UUID.randomUUID().toString();
         this.expenseName = expenseName;
         this.expenseDate = expenseDate;
         this.vendorId = vendorId;
         this.amount = amount;
+        this.expenseType = expenseType;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Expense() {
