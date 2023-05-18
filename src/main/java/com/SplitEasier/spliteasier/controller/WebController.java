@@ -26,8 +26,9 @@ public class WebController {
     }
     @GetMapping("/expense")
     public String getExpenses(Model model){
-        model.addAttribute("vendors",vendorService.findVendorNames());
+        model.addAttribute("expenses",expenseService.findAll());
         model.addAttribute("expenseForm",new ExpenseForm());
         return "expense";
     }
+
 }
