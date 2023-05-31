@@ -12,27 +12,22 @@ public class User {
     private int id;
     @JsonAlias("first_name")
     private String firstName;
-
     @JsonAlias("force_refresh_at")
     private String forceRefeshAt;
     @JsonAlias("country_code")
     private String countryCode;
-
     @JsonAlias("date_format")
     private String dateFormat;
     @JsonAlias("last_name")
     private String lastName;
     @JsonAlias("email")
     private String email;
-
     @JsonAlias("custom_picture")
     private String customPicture;
     @JsonAlias("registration_status")
     private String registrationStatus;
-
     @JsonAlias("default_group_id")
     private String defaultGroupId;
-
     @JsonAlias("picture")
     private JsonNode picture;
     @JsonAlias("notifications_read")

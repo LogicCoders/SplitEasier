@@ -34,13 +34,16 @@ public class SplitwiseAPI {
         logger.debug("Payload Received: {}", responseEntity.getBody());
         return objectMapper.readValue(responseEntity.getBody(), User.class);
     }
-    public void createGroup(String name, String groupType, boolean simplifyDebt, String firstName, String lastName, String email) throws JsonProcessingException, URISyntaxException {
+    public Group createGroup(String name, String groupType, boolean simplifyDebt, String firstName, String lastName, String email) throws JsonProcessingException, URISyntaxException {
         Group group = new Group(name, groupType, simplifyDebt, email, firstName, lastName);
         String body = new ObjectMapper().writeValueAsString(group);
         logger.debug("Sending payload: {}", body);
+        objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI(URL.CREATE_GROUP_URL));
         ResponseEntity<String> responseEntity = restTemplate.exchange(URL.CREATE_GROUP_URL,HttpMethod.POST, httpEntity, String.class);
+        logger.debug("Create Group Response: {}", responseEntity.getBody());
+        return objectMapper.readValue(responseEntity.getBody(), Group.class);
     }
 
 

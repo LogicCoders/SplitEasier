@@ -1,14 +1,21 @@
 package com.SplitEasier.spliteasier.splitwise.model;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.annotation.*;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonRootName("group")
 public class Group {
+    @JsonAlias("id")
+    private String id;
     private String name;
+    @JsonAlias("group_type")
     private String type;
+    @JsonAlias("simplify_by_default")
     private boolean simplifyDebt;
     private String user;
     private String firstName;
     private String lastName;
-
+    @JsonIgnore
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -22,6 +29,16 @@ public class Group {
         this.lastName = lastName;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    @JsonIgnore
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -66,7 +83,21 @@ public class Group {
         return user;
     }
 
+    @JsonIgnore
     public void setUser(String user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", simplifyDebt=" + simplifyDebt +
+                ", user='" + user + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
