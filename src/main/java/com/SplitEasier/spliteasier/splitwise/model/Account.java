@@ -8,11 +8,9 @@ public class Account {
     public Account( APIKey apiKey){
         this.apiKey = apiKey;
     }
-
     public APIKey getApiKey() {
         return apiKey;
     }
-
     public void setApiKey(APIKey apiKey) {
         this.apiKey = apiKey;
     }
