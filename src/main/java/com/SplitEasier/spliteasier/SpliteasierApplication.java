@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
+import java.io.IOException;
 
 @SpringBootApplication
 public class SpliteasierApplication {
@@ -16,7 +17,7 @@ public class SpliteasierApplication {
 		this.account = account;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		SpringApplication.run(SpliteasierApplication.class, args);
 	}
 
@@ -31,4 +32,6 @@ public class SpliteasierApplication {
 		httpHeaders.add(HttpHeaders.AUTHORIZATION, String.format("%s%c%s", HttpConstants.BEARER,'\u0020' , account.getApiKey().getKEY()));
 		return httpHeaders;
 	}
+
+
 }
