@@ -14,36 +14,27 @@ public class Expense {
 
     @Id
     private String id;
+    private String description;
+    private String expDate;
+    private String cost;
+    private String docID;
 
-    private String expenseName;
-    private String expenseDate;
-
-    private String vendorId;
-    private Double amount;
-
-    private ExpenseType expenseType;
-
-
-
-    public ExpenseType getExpenseType() {
-        return expenseType;
-    }
-
-    public void setExpenseType(ExpenseType expenseType) {
-        this.expenseType = expenseType;
-    }
-
-
-    public Expense(String expenseName, String expenseDate, String vendorId, Double amount, ExpenseType expenseType) {
-        this.expenseName = expenseName;
-        this.expenseDate = expenseDate;
-        this.vendorId = vendorId;
-        this.amount = amount;
-        this.expenseType = expenseType;
+    public Expense(String description, String expDate, String cost) {
         this.id = UUID.randomUUID().toString();
+        this.description = description;
+        this.expDate = expDate;
+        this.cost = cost;
     }
 
     public Expense() {
+    }
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
     }
 
     public String getId() {
@@ -54,35 +45,27 @@ public class Expense {
         this.id = id;
     }
 
-    public String getExpenseName() {
-        return expenseName;
+    public String getDescription() {
+        return description;
     }
 
-    public void setExpenseName(String expenseName) {
-        this.expenseName = expenseName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getExpenseDate() {
-        return expenseDate;
+    public String getExpDate() {
+        return expDate;
     }
 
-    public void setExpenseDate(String expenseDate) {
-        this.expenseDate = expenseDate;
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
     }
 
-    public String getVendorId() {
-        return vendorId;
+    public String getCost() {
+        return cost;
     }
 
-    public void setVendorId(String vendorId) {
-        this.vendorId = vendorId;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 }
