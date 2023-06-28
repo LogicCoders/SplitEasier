@@ -1,5 +1,6 @@
 package com.SplitEasier.spliteasier.splitwise;
 
+import com.SplitEasier.spliteasier.splitwise.model.Expense;
 import com.SplitEasier.spliteasier.splitwise.model.Group;
 import com.SplitEasier.spliteasier.splitwise.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -46,5 +49,13 @@ public class SplitwiseAPI {
         return objectMapper.readValue(responseEntity.getBody(), Group.class);
     }
 
+    public void createExpenseInGroup(BigDecimal cost, String description, int groupId, boolean splitEqually) throws JsonProcessingException, URISyntaxException {
+        Expense expense = new Expense(cost, description, groupId, splitEqually);
+        String body = new ObjectMapper().writeValueAsString(expense);
+        logger.debug("Sending payload: {}", body);
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI("https://secure.splitwise.com/api/v3.0/create_expense"));
+        ResponseEntity<String> responseEntity = restTemplate.exchange("https://secure.splitwise.com/api/v3.0/create_expense",HttpMethod.POST, httpEntity, String.class);
+    }
 
 }

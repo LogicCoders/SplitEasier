@@ -1,6 +1,6 @@
 package com.SplitEasier.spliteasier;
 import com.SplitEasier.spliteasier.splitwise.model.Account;
-import com.SplitEasier.spliteasier.splitwise.util.HttpConstants;
+import com.SplitEasier.spliteasier.splitwise.util.Constants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class SpliteasierApplication {
 	@Bean
 	public HttpHeaders httpHeaders(){
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(HttpHeaders.AUTHORIZATION, String.format("%s%c%s", HttpConstants.BEARER,'\u0020' , account.getApiKey().getKEY()));
+		httpHeaders.add(HttpHeaders.AUTHORIZATION, String.format("%s%c%s", Constants.BEARER,'\u0020' , account.getApiKey().getKEY()));
 		return httpHeaders;
 	}
 }
