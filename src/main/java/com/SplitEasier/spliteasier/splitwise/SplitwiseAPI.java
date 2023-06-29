@@ -1,6 +1,6 @@
 package com.SplitEasier.spliteasier.splitwise;
 
-import com.SplitEasier.spliteasier.splitwise.model.Expense;
+import com.SplitEasier.spliteasier.splitwise.model.SplitwiseExpense;
 import com.SplitEasier.spliteasier.splitwise.model.Group;
 import com.SplitEasier.spliteasier.splitwise.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,8 +50,8 @@ public class SplitwiseAPI {
     }
 
     public void createExpenseInGroup(BigDecimal cost, String description, int groupId, boolean splitEqually) throws JsonProcessingException, URISyntaxException {
-        Expense expense = new Expense(cost, description, groupId, splitEqually);
-        String body = new ObjectMapper().writeValueAsString(expense);
+        SplitwiseExpense splitwiseExpense = new SplitwiseExpense(cost, description, groupId, splitEqually);
+        String body = new ObjectMapper().writeValueAsString(splitwiseExpense);
         logger.debug("Sending payload: {}", body);
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI("https://secure.splitwise.com/api/v3.0/create_expense"));

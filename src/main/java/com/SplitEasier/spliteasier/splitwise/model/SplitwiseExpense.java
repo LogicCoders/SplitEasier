@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
-public class Expense {
+public class SplitwiseExpense {
     private BigDecimal cost;
     private String description;
     @JsonProperty(value = "group_id", access = JsonProperty.Access.READ_WRITE)
@@ -12,7 +12,7 @@ public class Expense {
     @JsonProperty(value = "split_equally", access = JsonProperty.Access.READ_WRITE)
     private boolean splitEqually;
 
-    public Expense(BigDecimal cost, String description, int groupId, boolean splitEqually) {
+    public SplitwiseExpense(BigDecimal cost, String description, int groupId, boolean splitEqually) {
         this.cost = cost;
         this.description = description;
         this.groupId = groupId;
