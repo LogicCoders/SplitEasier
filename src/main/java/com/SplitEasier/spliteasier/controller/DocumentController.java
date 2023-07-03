@@ -43,6 +43,6 @@ public class DocumentController {
         fileOutputStream.write(fileOutput);
         fileOutputStream.close();
         toConvertFile.deleteOnExit();
-        System.out.println(parser.loadAndSetContent(toConvertFile).createExpense());
+        parser.loadAndSetContent(toConvertFile).createExpense();
     }
 }
