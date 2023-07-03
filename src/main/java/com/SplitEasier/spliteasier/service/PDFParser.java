@@ -3,55 +3,43 @@ package com.SplitEasier.spliteasier.service;
 import com.SplitEasier.spliteasier.model.Expense;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class PDFParser {
-
+    private String content;
     private ArrayList<Expense> expenseArrayList = new ArrayList<>();
-
+    private PDDocument pdDocument;
     private final DocumentServices documentServices;
     private final ExpenseServices expenseServices;
 
+    private final Logger logger = LoggerFactory.getLogger(PDFParser.class);
 
     public PDFParser(DocumentServices documentServices, ExpenseServices expenseServices) {
         this.documentServices = documentServices;
         this.expenseServices = expenseServices;
     }
 
-    public String getContents() throws IOException {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-        String dateformat = formatter.format(date);
-        String path = documentServices.getPath(dateformat);
-        String name = documentServices.getName(path);
-        String pathname = path + "/" +name;
-        System.out.println(pathname);
-        File file = new File(path+"/"+name);
-        PDDocument doc = PDDocument.load(file);
+    public PDFParser loadAndSetContent(File file) throws IOException {
+        pdDocument = PDDocument.load(file);
         PDFTextStripper pdfTextStripper = new PDFTextStripper();
-        String content = pdfTextStripper.getText(doc);
-        return content;
-    }
-    public String getExpenseDetails() throws IOException {
-        String content = this.getContents();
-        int startingindex = content.indexOf("Date Details Debit € Credit € Balance €\n");
-        int endingindex = content.indexOf("This is an eligible deposit under the Deposit Guarantee Scheme. For more information, ");
-        String expenseDetails = content.substring(startingindex+40,endingindex);
-        System.out.println(expenseDetails);
-        return expenseDetails;
+        content = pdfTextStripper.getText(pdDocument);
+        return this;
     }
 
-    public ArrayList<Expense> createExpense() throws IOException {
-        String expensedetails = getExpenseDetails();
-        String[] lines = expensedetails.split("\n");
+    public ArrayList<Expense> createExpense() {
+        String expenseDetails = getExpenseDetails();
+        String[] lines = expenseDetails.split("\n");
 
         for(String line : lines) {
             Expense expense = new Expense();
@@ -67,7 +55,7 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             } else if (line.contains("TESCO")) {
                 desc = "TESCO";
@@ -78,7 +66,7 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             } else if (line.contains("ALDI")) {
                 desc = "ALDI";
@@ -89,7 +77,7 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             } else if (line.contains("BORD GAIS")) {
                 desc = "BORD GAIS";
@@ -100,7 +88,7 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             } else if (line.contains("DELIVEROO")) {
                 desc = "DELIVEROO";
@@ -111,7 +99,7 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             } else if (line.contains("LIDL")) {
                 desc = "LIDL";
@@ -122,14 +110,20 @@ public class PDFParser {
                 matcher.find();
                 String cost = matcher.group(1);
                 expense.setDescription(desc);
-                expense.setCost(cost);
+                expense.setCost(new BigDecimal(cost));
                 expense.setExpDate(formatter.format(date));
             }
             if (expense.getDescription()!=null) {
                 expenseArrayList.add(new Expense(expense.getDescription(), expense.getExpDate(), expense.getCost()));
             }
         }
-
+        logger.debug("Expense list: {}", expenseArrayList);
         return expenseArrayList;
+    }
+    private String getExpenseDetails() {
+        int startingIndex = content.indexOf("Date Details Debit € Credit € Balance €\n");
+        int endingIndex = content.indexOf("This is an eligible deposit under the Deposit Guarantee Scheme. For more information, ");
+        String expenseDetails = content.substring(startingIndex + 40, endingIndex);
+        return expenseDetails;
     }
 }

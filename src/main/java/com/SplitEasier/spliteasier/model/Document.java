@@ -6,17 +6,18 @@ import java.util.UUID;
 
 @Table("DOCUMENT")
 public class Document {
-
     @Id
     private String id;
-
     private String name;
     private String path;
-
-
     private String currDt;
 
     public Document() {
+    }
+
+    public Document(String name, String path) {
+        this.name = name;
+        this.path = path;
     }
 
     public Document(String name, String path, String currDt) {

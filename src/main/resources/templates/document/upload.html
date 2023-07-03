@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Bank Statement</title>
+</head>
+<body>
+<div><span>Upload here</span></div>
+<div>
+<form th:action="@{/document/upload}"
+    method="POST"
+    enctype="multipart/form-data"
+    >
+   <input type="file"
+    name="file"
+   >
+<button type="submit">Upload</button>
+</form>
+
+</div>
+
+</body>
+</html>
