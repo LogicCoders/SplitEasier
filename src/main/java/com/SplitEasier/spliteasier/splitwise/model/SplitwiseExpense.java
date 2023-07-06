@@ -2,28 +2,26 @@ package com.SplitEasier.spliteasier.splitwise.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigDecimal;
-
 public class SplitwiseExpense {
-    private BigDecimal cost;
+    private String cost;
     private String description;
     @JsonProperty(value = "group_id", access = JsonProperty.Access.READ_WRITE)
     private int groupId;
     @JsonProperty(value = "split_equally", access = JsonProperty.Access.READ_WRITE)
     private boolean splitEqually;
 
-    public SplitwiseExpense(BigDecimal cost, String description, int groupId, boolean splitEqually) {
+    public SplitwiseExpense(String cost, String description, int groupId, boolean splitEqually) {
         this.cost = cost;
         this.description = description;
         this.groupId = groupId;
         this.splitEqually = splitEqually;
     }
 
-    public BigDecimal getCost() {
+    public String getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 
