@@ -1,7 +1,7 @@
 package com.SplitEasier.spliteasier.splitwise;
 
-import com.SplitEasier.spliteasier.splitwise.model.SplitwiseExpense;
 import com.SplitEasier.spliteasier.splitwise.model.Group;
+import com.SplitEasier.spliteasier.splitwise.model.SplitwiseExpense;
 import com.SplitEasier.spliteasier.splitwise.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,7 +13,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -49,13 +48,14 @@ public class SplitwiseAPI {
         return objectMapper.readValue(responseEntity.getBody(), Group.class);
     }
 
-    public void createExpenseInGroup(BigDecimal cost, String description, int groupId, boolean splitEqually) throws JsonProcessingException, URISyntaxException {
+    public void createExpenseInGroup(String cost, String description, int groupId, boolean splitEqually) throws JsonProcessingException, URISyntaxException {
         SplitwiseExpense splitwiseExpense = new SplitwiseExpense(cost, description, groupId, splitEqually);
         String body = new ObjectMapper().writeValueAsString(splitwiseExpense);
         logger.debug("Sending payload: {}", body);
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI("https://secure.splitwise.com/api/v3.0/create_expense"));
         ResponseEntity<String> responseEntity = restTemplate.exchange("https://secure.splitwise.com/api/v3.0/create_expense",HttpMethod.POST, httpEntity, String.class);
+        logger.debug("Response Entity {} - {}", responseEntity.getBody(), responseEntity.getStatusCode());
     }
 
 }
