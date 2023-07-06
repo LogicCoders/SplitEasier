@@ -10,23 +10,16 @@ import java.util.Optional;
 
 @Component
 public class DocumentServices {
-
     private final DocumentRepository documentRepository;
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-
     public DocumentServices(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
-
-
-    public Document createdoc(String name, String path){
-        Document newdoc = new Document(name, path);
+    public Document createDoc(String name, String path){
+        Document newDocument = new Document(name, path);
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-        newdoc.setCurrDt(formatter.format(date));
-        return documentRepository.save(newdoc);
+        newDocument.setCurrDt(formatter.format(date));
+        return documentRepository.save(newDocument);
     }
     public String getIdByCurrDt(String date){
         Optional<Document> optionalDocument = documentRepository.findByCurrDt(date);

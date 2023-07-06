@@ -4,7 +4,6 @@ package com.SplitEasier.spliteasier.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Table("EXPENSE")
@@ -13,10 +12,10 @@ public class Expense {
     private String id;
     private String description;
     private String expDate;
-    private BigDecimal cost;
+    private String cost;
     private String docID;
 
-    public Expense(String description, String expDate, BigDecimal cost) {
+    public Expense(String description, String expDate, String cost) {
         this.id = UUID.randomUUID().toString();
         this.description = description;
         this.expDate = expDate;
@@ -58,11 +57,11 @@ public class Expense {
         this.expDate = expDate;
     }
 
-    public BigDecimal getCost() {
+    public String getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 }
