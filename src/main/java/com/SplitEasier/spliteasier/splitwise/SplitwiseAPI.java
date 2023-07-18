@@ -1,5 +1,6 @@
 package com.SplitEasier.spliteasier.splitwise;
 
+import com.SplitEasier.spliteasier.splitwise.model.Account;
 import com.SplitEasier.spliteasier.splitwise.model.Group;
 import com.SplitEasier.spliteasier.splitwise.model.SplitwiseExpense;
 import com.SplitEasier.spliteasier.splitwise.model.User;
@@ -19,18 +20,16 @@ import java.net.URISyntaxException;
 @Component
 public class SplitwiseAPI {
     private final Logger logger = LoggerFactory.getLogger(SplitwiseAPI.class);
-    private final HttpHeaders httpHeaders;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-
-    public SplitwiseAPI(HttpHeaders httpHeaders, RestTemplate restTemplate, ObjectMapper objectMapper)  {
-        this.httpHeaders = httpHeaders;
+    private Account account;
+    public SplitwiseAPI(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
 
     public User getCurrentUserDetails() throws JsonProcessingException, URISyntaxException {
-        HttpEntity<String> httpEntity = new RequestEntity<>(httpHeaders, HttpMethod.GET, new URI(URL.GET_CURRENT_USER));
+        HttpEntity<String> httpEntity = new RequestEntity<>(account.getHttpHeaders(), HttpMethod.GET, new URI(URL.GET_CURRENT_USER));
         objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         ResponseEntity<String> responseEntity = restTemplate.exchange(URL.GET_CURRENT_USER, HttpMethod.GET, httpEntity, String.class);
         logger.debug("Payload Received: {}", responseEntity.getBody());
@@ -41,8 +40,8 @@ public class SplitwiseAPI {
         String body = new ObjectMapper().writeValueAsString(group);
         logger.debug("Sending payload: {}", body);
         objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
-        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI(URL.CREATE_GROUP_URL));
+        account.getHttpHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<String> httpEntity = new RequestEntity<>(body, account.getHttpHeaders(), HttpMethod.POST, new URI(URL.CREATE_GROUP_URL));
         ResponseEntity<String> responseEntity = restTemplate.exchange(URL.CREATE_GROUP_URL,HttpMethod.POST, httpEntity, String.class);
         logger.debug("Create Group Response: {}", responseEntity.getBody());
         return objectMapper.readValue(responseEntity.getBody(), Group.class);
@@ -52,10 +51,17 @@ public class SplitwiseAPI {
         SplitwiseExpense splitwiseExpense = new SplitwiseExpense(cost, description, groupId, splitEqually);
         String body = new ObjectMapper().writeValueAsString(splitwiseExpense);
         logger.debug("Sending payload: {}", body);
-        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<String> httpEntity = new RequestEntity<>(body, httpHeaders, HttpMethod.POST, new URI("https://secure.splitwise.com/api/v3.0/create_expense"));
+        account.getHttpHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<String> httpEntity = new RequestEntity<>(body, account.getHttpHeaders(), HttpMethod.POST, new URI("https://secure.splitwise.com/api/v3.0/create_expense"));
         ResponseEntity<String> responseEntity = restTemplate.exchange("https://secure.splitwise.com/api/v3.0/create_expense",HttpMethod.POST, httpEntity, String.class);
         logger.debug("Response Entity {} - {}", responseEntity.getBody(), responseEntity.getStatusCode());
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }
